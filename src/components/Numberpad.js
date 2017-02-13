@@ -16,7 +16,7 @@ class Numberpad extends React.Component {
     render() {
         const Button = bindButton(this.props.onClick);
 
-        if (this.props.disabled) {
+        if (this.props.hidden) {
             return null;
         }
 

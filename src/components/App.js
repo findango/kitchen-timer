@@ -173,7 +173,7 @@ class App extends React.Component {
                 />
                 <Numberpad
                     onClick={this.addDigit}
-                    disabled={this.state.status !== 'stopped'}
+                    hidden={this.state.status !== 'stopped'}
                 />
                 <div>{this.state.status}</div>
             </div>
