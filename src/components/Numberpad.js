@@ -16,7 +16,11 @@ class Numberpad extends React.Component {
     render() {
         const Button = bindButton(this.props.onClick);
 
-        return <div disabled={this.props.disabled}>
+        if (this.props.disabled) {
+            return null;
+        }
+
+        return <div>
             <div className="row">
                 <div className="column">
                     <Button value="1"/>

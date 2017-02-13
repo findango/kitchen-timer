@@ -18,7 +18,7 @@ class App extends React.Component {
         this.state = {
             total: 25 * MINUTES,
             remaining: 25 * MINUTES,
-            status: 'stopped',
+            status: 'paused',
             lastTick: null,
             timer: null,
             digits: '',
@@ -46,7 +46,7 @@ class App extends React.Component {
             clearInterval(this.state.timer);
             this.setState({
                 remaining: 0,
-                status: 'stopped',
+                status: 'alarming',
                 timer: null,
             });
             this.alarm();
@@ -58,9 +58,10 @@ class App extends React.Component {
         // flash, play sound, etc.
         // and reset the timer
         setTimeout(() => {
-            if (this.state.status === 'stopped' && this.state.remaining === 0) {
+            if (this.state.status === 'alarming' && this.state.remaining === 0) {
                 this.setState({
                     remaining: this.state.total,
+                    status: 'paused',
                 });
             }
         }, 3000);
@@ -109,7 +110,7 @@ class App extends React.Component {
                 total: time,
                 remaining: time,
                 digits: this.state.digits + digit,
-                status: 'paused',
+                // status: 'paused',
             });
         }
     }

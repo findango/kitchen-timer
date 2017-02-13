@@ -4,6 +4,13 @@ import './components.css';
 const buttonClass = 'button button-outline';
 
 class Controls extends React.Component {
+    static propTypes = {
+        onClear: React.PropTypes.func.isRequired,
+        onPlay: React.PropTypes.func.isRequired,
+        onPause: React.PropTypes.func.isRequired,
+        onReset: React.PropTypes.func.isRequired,
+        buttonState: React.PropTypes.object,
+    };
 
     render() {
         const enabled = this.props.buttonState;
