@@ -1,5 +1,11 @@
 import React from 'react';
+import 'icono';
 import './components.css';
+
+const PlayIcon = () => <i className="icono-play" />;
+const PauseIcon = () => <i className="icono-pause" />;
+const ResetIcon = () => <i className="icono-reset" />;
+const ClearIcon = () => <i className="icono-cross" />;
 
 const buttonClass = 'button button-outline';
 
@@ -14,7 +20,6 @@ class Controls extends React.Component {
 
     render() {
         const enabled = this.props.buttonState;
-        const playPauseCaption = enabled.play ? 'Play' : 'Pause';
         const playPauseHandler = enabled.play ? this.props.onPlay : this.props.onPause;
 
         return <div>
@@ -22,19 +27,21 @@ class Controls extends React.Component {
                 onClick={this.props.onClear}
                 disabled={!enabled.clear}
             >
-                Clear
+                <ClearIcon />
             </button>
             <button className={buttonClass}
                 onClick={playPauseHandler}
                 disabled={!enabled.play && !enabled.pause}
             >
-                {playPauseCaption}
+                { enabled.play ?
+                    <PlayIcon /> : <PauseIcon />
+                }
             </button>
             <button className={buttonClass}
                 onClick={this.props.onReset}
                 disabled={!enabled.reset}
             >
-                Reset
+                <ResetIcon />
             </button>
         </div>;
     }

@@ -4,8 +4,10 @@
     margin: 5px;
 }
 
-.button {
+.button.button-outline {
     margin: 5px;
+    border-color: grey;
+    color: grey;
 }
 
 .button-num {
