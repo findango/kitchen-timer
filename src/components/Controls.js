@@ -33,8 +33,8 @@ class Controls extends React.Component {
                 onClick={playPauseHandler}
                 disabled={!enabled.play && !enabled.pause}
             >
-                { enabled.play ?
-                    <PlayIcon /> : <PauseIcon />
+                { enabled.pause ?
+                    <PauseIcon /> : <PlayIcon />
                 }
             </button>
             <button className={buttonClass}
