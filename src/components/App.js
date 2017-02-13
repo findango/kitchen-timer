@@ -10,7 +10,7 @@ import './App.css';
 
 const SECONDS = 1000;
 const MINUTES = 60 * SECONDS;
-const HOURS = 60 * MINUTES;
+// const HOURS = 60 * MINUTES;
 
 class App extends React.Component {
     constructor() {
@@ -68,6 +68,22 @@ class App extends React.Component {
     }
 
     play() {
+        if (this.state.status === 'stopped' && this.state.digits) {
+            const digits = ('00000' + this.state.digits).substr(-5);
+            const hours = Number(digits.substr(0, 1));
+            const mins = Number(digits.substr(1, 2));
+            const secs = Number(digits.substr(3, 2));
+            const time = Math.min(
+                ((hours * 3600) + (mins * 60) + secs) * 1000,
+                35999000 // 9:59:59
+            );
+            this.setState({
+                total: time,
+                remaining: time,
+                digits: '',
+            });
+        }
+
         const timer = setInterval(this.tick, 100);
         this.setState({
             status: 'running',
@@ -100,29 +116,26 @@ class App extends React.Component {
     }
 
     addDigit(digit) {
-        if (this.state.digits.length < 5) {
-            const digits = ('00000' + this.state.digits + digit).substr(-5);
-            const hours = Number(digits.substr(0, 1));
-            const mins = Number(digits.substr(1, 2));
-            const secs = Number(digits.substr(3, 2));
-            const time = ((hours * 3600) + (mins * 60) + secs) * 1000;
-            this.setState({
-                total: time,
-                remaining: time,
-                digits: this.state.digits + digit,
-                // status: 'paused',
-            });
+        if (this.state.digits.length === 5 ||
+            (this.state.digits.length === 0 && digit === '0')
+        ) {
+            return;
         }
+        this.setState({
+            total: 0,
+            remaining: 0,
+            digits: this.state.digits + digit,
+        });
     }
 
     configureButtons() {
         const clearEnabled = this.state.status !== 'running';
         const resetEnabled =
-            (this.state.status == 'paused') &&
+            (this.state.status === 'paused') &&
             (this.state.remaining !== this.state.total);
         const playEnabled =
-            (this.state.status !== 'running') &&
-            (this.state.remaining !== 0);
+            (this.state.status === 'paused') ||
+            (this.state.status === 'stopped' && (this.state.remaining !== 0 || this.state.digits));
         const pauseEnabled = this.state.status === 'running';
 
         return {
@@ -138,7 +151,7 @@ class App extends React.Component {
 
         return (
             <div className="App container">
-                <Display time={this.state.remaining} />
+                <Display time={this.state.remaining} digits={this.state.digits}/>
                 <ProgressBar
                     size={200}
                     total={this.state.total}
