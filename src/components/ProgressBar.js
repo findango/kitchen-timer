@@ -3,18 +3,18 @@ import './components.css';
 
 class ProgressBar extends React.Component {
     static propTypes = {
-        size: React.PropTypes.number.isRequired,
+        size: React.PropTypes.string.isRequired,
         total: React.PropTypes.number.isRequired,
-        remaining: React.PropTypes.number.isRequired,
+        progress: React.PropTypes.number.isRequired,
     };
 
     render() {
-        const width = this.props.size + "px";
-        const remainingWidth = (this.props.size * (this.props.remaining / this.props.total)) + "px";
+        const width = this.props.size;
+        const progressWidth = 100 * (this.props.progress / this.props.total) + "%";
 
         return <div>
-            <div className="progress" style={{width: width}}>
-                <div className="remaining" style={{width: remainingWidth}}></div>
+            <div className="progress" style={{width}}>
+                <div className="remaining" style={{width: progressWidth}}></div>
             </div>
         </div>
    }

@@ -160,9 +160,9 @@ class App extends React.Component {
                     digits={this.state.digits}
                 />
                 <ProgressBar
-                    size={200}
+                    size="100%"
                     total={this.state.total}
-                    remaining={this.state.remaining}
+                    progress={this.state.remaining}
                 />
                 <Controls
                     buttonState={controlState}
