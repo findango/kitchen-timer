@@ -13,8 +13,8 @@ class ProgressBar extends React.Component {
         const progressWidth = 100 * (this.props.progress / this.props.total) + "%";
 
         return <div>
-            <div className="progress" style={{width}}>
-                <div className="remaining" style={{width: progressWidth}}></div>
+            <div className="progress-background" style={{width}}>
+                <div className="progress" style={{width: progressWidth}}></div>
             </div>
         </div>
    }

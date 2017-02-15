@@ -4,33 +4,99 @@
     margin: 5px;
 }
 
-.button.button-outline {
+.digit {
+    display: inline-block;
+    color: #5c6e80;
+    font-size: 5rem;
+    margin: 1rem;
+    margin-bottom: 0;
+};
+
+.digit small {
+    font-size: 2rem;
+}
+
+i.icon {
+    width: .8rem;
+    height: .8rem;
+}
+
+.button {
+    padding: 0 2rem;
+    text-transform: none;
+}
+
+.button-control {
+    border: 0;
+    margin: .5rem;
+    padding: 0;
+    width: 7rem;
+    font-size: 2rem;
+    font-weight: 100;
+    background-color: transparent;
+}
+
+/*.button-control .icono-cross {
+    width: 50%;
+    height: 10px;
+}*/
+
+/*.button-control .icono-play {
+    width: 15px;
+    height: 15px;
+}
+*/
+
+.button:focus {
+    background-color: transparent;
+}
+
+.button[disabled]:hover {
+    background-color: transparent;
+}
+
+.button-control .icono-reset {
+    width: 20px;
+    height: 20px;
+}
+
+.button-control .icono-pause {
+    width: 4px;
+    height: 20px;
+}
+
+/*.button.button-outline {
     margin: 5px;
     border-color: grey;
     color: grey;
-}
+}*/
 
 .button-num {
-    font-size: 2rem;
-    /*padding: 0 15px;*/
-    width: 5rem;
+    margin: .5rem;
     height: 5rem;
-    line-height: 5rem;
+    width: 7rem;
+    padding: 0;
+    /*line-height: 3rem;*/
+    font-size: 2rem;
+    font-weight: 100;
+    background-color: #3c4e60;
+    border: 0;
+    border-radius: 3rem;
 }
 
-.progress {
+.progress-background {
     display: inline-block;
     /*width: 300px;*/
     height: 10px;
     padding: 0;
     margin: 0;
-    background-color: grey;
+    background-color: #3c4e60;
 }
 
-.remaining {
+.progress {
     /*width: 200px;*/
     height: 10px;
     padding: 0;
     margin: 0;
-    background-color: orange;
+    background-color: #faba66;
 }

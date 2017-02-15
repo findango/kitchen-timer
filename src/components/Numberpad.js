@@ -4,7 +4,7 @@ import './components.css';
 const bindButton = (handleClick) => (props) => {
     return (
         <button
-            className="button button-outline button-num"
+            className="button button-num"
             onClick={() => handleClick(props.value)}
         >
             {props.value}
@@ -44,9 +44,9 @@ class Numberpad extends React.Component {
             </div>
             <div className="row">
                 <div className="column">
-                    <Button value="."/>
+                    <span className="button-num" />
                     <Button value="0"/>
-                    <Button value="."/>
+                    <span className="button-num" />
                 </div>
             </div>
         </div>

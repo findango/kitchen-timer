@@ -40,10 +40,10 @@ class Display extends Component {
             ? parseDigits(this.props.digits)
             : parseTime(time);
 
-        return <div>
-            <div className="displayGroup"><h1>{hours}h</h1></div>
-            <div className="displayGroup"><h1>{mins}m</h1></div>
-            <div className="displayGroup"><h1>{secs}s</h1></div>
+        return <div className="display">
+            <div className="digit">{hours}<small>h</small></div>
+            <div className="digit">{mins}<small>m</small></div>
+            <div className="digit">{secs}<small>s</small></div>
         </div>;
     }
 }
