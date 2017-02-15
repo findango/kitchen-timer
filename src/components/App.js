@@ -1,4 +1,5 @@
 import React from 'react';
+import Sound from 'react-sound';
 import 'milligram';
 
 import Display from './Display';
@@ -54,17 +55,15 @@ class App extends React.Component {
     }
 
     alarm() {
+        // flash, play sound, etc. and then reset the timer, if not manually reset
         this.setState({
             status: 'alarming',
         });
-        console.log('Alarm!');
-        // flash, play sound, etc.
-        // and reset the timer
         setTimeout(() => {
             if (this.state.status === 'alarming' && this.state.remaining === 0) {
                 this.reset();
             }
-        }, 3000);
+        }, 5000);
     }
 
     initializeFromDigits() {
@@ -155,27 +154,38 @@ class App extends React.Component {
 
         return (
             <div className="App container">
-                <Display
-                    time={this.state.remaining}
-                    digits={this.state.digits}
+                <div className="row">
+                    <div className="column column-60 column-offset-20">
+                            <Display
+                                time={this.state.remaining}
+                                digits={this.state.digits}
+                            />
+                            <ProgressBar
+                                size="100%"
+                                total={this.state.total}
+                                progress={this.state.remaining}
+                            />
+                            <Controls
+                                buttonState={controlState}
+                                onPlay={this.play}
+                                onPause={this.pause}
+                                onReset={this.reset}
+                                onClear={this.clear}
+                            />
+                            <Numberpad
+                                onClick={this.addDigit}
+                                hidden={this.state.status !== 'stopped'}
+                            />
+                        <div>{this.state.status}</div>
+                    </div>
+                </div>
+                <Sound
+                    url="sounds/foghorn.mp3"
+                    autoLoad={true}
+                    playStatus={this.state.status === 'alarming'
+                        ? Sound.status.PLAYING
+                        : Sound.status.STOPPED}
                 />
-                <ProgressBar
-                    size="100%"
-                    total={this.state.total}
-                    progress={this.state.remaining}
-                />
-                <Controls
-                    buttonState={controlState}
-                    onPlay={this.play}
-                    onPause={this.pause}
-                    onReset={this.reset}
-                    onClear={this.clear}
-                />
-                <Numberpad
-                    onClick={this.addDigit}
-                    hidden={this.state.status !== 'stopped'}
-                />
-                <div>{this.state.status}</div>
             </div>
         );
     }
