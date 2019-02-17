@@ -1,5 +1,5 @@
 {
-  "name": "timer",
+  "name": "kitchen-timer",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {

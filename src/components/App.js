@@ -11,7 +11,7 @@ import './App.css';
 
 const SECONDS = 1000;
 const MINUTES = 60 * SECONDS;
-const MAX_TIME = 35999000 // 9:59:59
+const MAX_TIME = 35999000; // 9:59:59
 
 class App extends React.Component {
     constructor() {
@@ -24,18 +24,9 @@ class App extends React.Component {
             timer: null,
             digits: '',
         };
-
-        this.play = this.play.bind(this);
-        this.pause = this.pause.bind(this);
-        this.reset = this.reset.bind(this);
-        this.clear = this.clear.bind(this);
-        this.tick = this.tick.bind(this);
-        this.alarm = this.alarm.bind(this);
-        this.addDigit = this.addDigit.bind(this);
-        this.initializeFromDigits = this.initializeFromDigits.bind(this);
     }
 
-    tick() {
+    tick = () => {
         const now = Date.now();
         const sinceLast = now - (this.state.lastTick || now);
         const remaining = this.state.remaining - sinceLast;
@@ -52,9 +43,9 @@ class App extends React.Component {
             });
             this.alarm();
         }
-    }
+    };
 
-    alarm() {
+    alarm = () => {
         // flash, play sound, etc. and then reset the timer, if not manually reset
         this.setState({
             status: 'alarming',
@@ -64,25 +55,22 @@ class App extends React.Component {
                 this.reset();
             }
         }, 5000);
-    }
+    };
 
-    initializeFromDigits() {
+    initializeFromDigits = () => {
         const digits = ('00000' + this.state.digits).substr(-5);
         const hours = Number(digits.substr(0, 1));
         const mins = Number(digits.substr(1, 2));
         const secs = Number(digits.substr(3, 2));
-        const time = Math.min(
-            ((hours * 3600) + (mins * 60) + secs) * 1000,
-            MAX_TIME
-        );
+        const time = Math.min((hours * 3600 + mins * 60 + secs) * 1000, MAX_TIME);
         this.setState({
             total: time,
             remaining: time,
             digits: '',
         });
-    }
+    };
 
-    play() {
+    play = () => {
         if (this.state.status === 'stopped' && this.state.digits) {
             this.initializeFromDigits();
         }
@@ -92,36 +80,34 @@ class App extends React.Component {
             status: 'running',
             lastTick: Date.now(),
             timer: timer,
-        })
-    }
+        });
+    };
 
-    pause() {
+    pause = () => {
         clearInterval(this.state.timer);
         this.setState({
             status: 'paused',
             timer: null,
-        })
-    }
+        });
+    };
 
-    reset() {
+    reset = () => {
         this.setState({
             remaining: this.state.total,
             status: 'paused',
         });
-    }
+    };
 
-    clear() {
+    clear = () => {
         this.setState({
             remaining: 0,
             status: 'stopped',
             digits: '',
         });
-    }
+    };
 
-    addDigit(digit) {
-        if (this.state.digits.length === 5 ||
-            (this.state.digits.length === 0 && digit === '0')
-        ) {
+    addDigit = digit => {
+        if (this.state.digits.length === 5 || (this.state.digits.length === 0 && digit === '0')) {
             return;
         }
         this.setState({
@@ -129,15 +115,14 @@ class App extends React.Component {
             remaining: 0,
             digits: this.state.digits + digit,
         });
-    }
+    };
 
     configureButtons() {
         const clearEnabled = this.state.status !== 'running';
         const resetEnabled =
-            (this.state.status === 'paused') &&
-            (this.state.remaining !== this.state.total);
+            this.state.status === 'paused' && this.state.remaining !== this.state.total;
         const playEnabled =
-            (this.state.status === 'paused') ||
+            this.state.status === 'paused' ||
             (this.state.status === 'stopped' && (this.state.remaining !== 0 || this.state.digits));
         const pauseEnabled = this.state.status === 'running';
 
@@ -146,7 +131,7 @@ class App extends React.Component {
             play: playEnabled,
             pause: pauseEnabled,
             reset: resetEnabled,
-        }
+        };
     }
 
     render() {
@@ -156,35 +141,34 @@ class App extends React.Component {
             <div className="App container">
                 <div className="row">
                     <div className="column column-60 column-offset-20">
-                            <Display
-                                time={this.state.remaining}
-                                digits={this.state.digits}
-                            />
-                            <ProgressBar
-                                size="100%"
-                                total={this.state.total}
-                                progress={this.state.remaining}
-                            />
-                            <Controls
-                                buttonState={controlState}
-                                onPlay={this.play}
-                                onPause={this.pause}
-                                onReset={this.reset}
-                                onClear={this.clear}
-                            />
-                            <Numberpad
-                                onClick={this.addDigit}
-                                hidden={this.state.status !== 'stopped'}
-                            />
+                        <Display time={this.state.remaining} digits={this.state.digits} />
+                        <ProgressBar
+                            size="100%"
+                            total={this.state.total}
+                            progress={this.state.remaining}
+                        />
+                        <Controls
+                            buttonState={controlState}
+                            onPlay={this.play}
+                            onPause={this.pause}
+                            onReset={this.reset}
+                            onClear={this.clear}
+                        />
+                        <Numberpad
+                            onClick={this.addDigit}
+                            hidden={this.state.status !== 'stopped'}
+                        />
                         <div>{this.state.status}</div>
                     </div>
                 </div>
                 <Sound
                     url="sounds/foghorn.mp3"
                     autoLoad={true}
-                    playStatus={this.state.status === 'alarming'
-                        ? Sound.status.PLAYING
-                        : Sound.status.STOPPED}
+                    playStatus={
+                        this.state.status === 'alarming'
+                            ? Sound.status.PLAYING
+                            : Sound.status.STOPPED
+                    }
                 />
             </div>
         );
