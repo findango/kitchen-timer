@@ -117,26 +117,18 @@ class App extends React.Component {
         });
     };
 
-    configureButtons() {
-        const clearEnabled = this.state.status !== 'running';
-        const resetEnabled =
-            this.state.status === 'paused' && this.state.remaining !== this.state.total;
-        const playEnabled =
-            this.state.status === 'paused' ||
-            (this.state.status === 'stopped' && (this.state.remaining !== 0 || this.state.digits));
-        const pauseEnabled = this.state.status === 'running';
-
+    configureButtons = () => {
+        const { status, total, remaining, digits } = this.state;
         return {
-            clear: clearEnabled,
-            play: playEnabled,
-            pause: pauseEnabled,
-            reset: resetEnabled,
+            clearEnabled: status !== 'running',
+            playEnabled:
+                status === 'paused' || (status === 'stopped' && (remaining !== 0 || digits.length)),
+            pauseEnabled: status === 'running',
+            resetEnabled: status === 'paused' && remaining !== total,
         };
-    }
+    };
 
     render() {
-        const controlState = this.configureButtons();
-
         return (
             <div className="App container">
                 <div className="row">
@@ -148,7 +140,7 @@ class App extends React.Component {
                             progress={this.state.remaining}
                         />
                         <Controls
-                            buttonState={controlState}
+                            buttonState={this.configureButtons()}
                             onPlay={this.play}
                             onPause={this.pause}
                             onReset={this.reset}

@@ -23,7 +23,7 @@ class Controls extends React.Component {
     };
 
     render() {
-        const enabled = this.props.buttonState;
+        const buttons = this.props.buttonState;
 
         return (
             <div className="row">
@@ -31,25 +31,25 @@ class Controls extends React.Component {
                     <Button
                         icon={ClearIcon}
                         onClick={this.props.onClear}
-                        disabled={!enabled.clear}
+                        disabled={!buttons.clearEnabled}
                     />
-                    {enabled.play ? (
-                        <Button
-                            icon={PlayIcon}
-                            onClick={this.props.onPlay}
-                            disabled={!enabled.play}
-                        />
-                    ) : (
+                    {buttons.pauseEnabled ? (
                         <Button
                             icon={PauseIcon}
                             onClick={this.props.onPause}
-                            disabled={!enabled.pause}
+                            disabled={!buttons.pauseEnabled}
+                        />
+                    ) : (
+                        <Button
+                            icon={PlayIcon}
+                            onClick={this.props.onPlay}
+                            disabled={!buttons.playEnabled}
                         />
                     )}
                     <Button
                         icon={ResetIcon}
                         onClick={this.props.onReset}
-                        disabled={!enabled.reset}
+                        disabled={!buttons.resetEnabled}
                     />
                 </div>
             </div>
