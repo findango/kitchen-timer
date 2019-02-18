@@ -12,6 +12,12 @@ import './App.css';
 const SECONDS = 1000;
 const MINUTES = 60 * SECONDS;
 const MAX_TIME = 35999000; // 9:59:59
+const appStatus = {
+    PAUSED: 'paused',
+    RUNNING: 'running',
+    ALARMING: 'alarming',
+    STOPPED: 'stopped',
+};
 
 class App extends React.Component {
     constructor() {
@@ -19,7 +25,7 @@ class App extends React.Component {
         this.state = {
             total: 25 * MINUTES,
             remaining: 25 * MINUTES,
-            status: 'paused',
+            status: appStatus.PAUSED,
             lastTick: null,
             timer: null,
             digits: '',
@@ -48,10 +54,10 @@ class App extends React.Component {
     alarm = () => {
         // flash, play sound, etc. and then reset the timer, if not manually reset
         this.setState({
-            status: 'alarming',
+            status: appStatus.ALARMING,
         });
         setTimeout(() => {
-            if (this.state.status === 'alarming' && this.state.remaining === 0) {
+            if (this.state.status === appStatus.ALARMING && this.state.remaining === 0) {
                 this.reset();
             }
         }, 5000);
@@ -71,13 +77,13 @@ class App extends React.Component {
     };
 
     play = () => {
-        if (this.state.status === 'stopped' && this.state.digits) {
+        if (this.state.status === appStatus.STOPPED && this.state.digits) {
             this.initializeFromDigits();
         }
 
         const timer = setInterval(this.tick, 100);
         this.setState({
-            status: 'running',
+            status: appStatus.RUNNING,
             lastTick: Date.now(),
             timer: timer,
         });
@@ -86,7 +92,7 @@ class App extends React.Component {
     pause = () => {
         clearInterval(this.state.timer);
         this.setState({
-            status: 'paused',
+            status: appStatus.PAUSED,
             timer: null,
         });
     };
@@ -94,14 +100,14 @@ class App extends React.Component {
     reset = () => {
         this.setState({
             remaining: this.state.total,
-            status: 'paused',
+            status: appStatus.PAUSED,
         });
     };
 
     clear = () => {
         this.setState({
             remaining: 0,
-            status: 'stopped',
+            status: appStatus.STOPPED,
             digits: '',
         });
     };
@@ -120,11 +126,12 @@ class App extends React.Component {
     configureButtons = () => {
         const { status, total, remaining, digits } = this.state;
         return {
-            clearEnabled: status !== 'running',
+            clearEnabled: status !== appStatus.RUNNING,
             playEnabled:
-                status === 'paused' || (status === 'stopped' && (remaining !== 0 || digits.length)),
-            pauseEnabled: status === 'running',
-            resetEnabled: status === 'paused' && remaining !== total,
+                status === appStatus.PAUSED ||
+                (status === appStatus.STOPPED && (remaining !== 0 || digits.length)),
+            pauseEnabled: status === appStatus.RUNNING,
+            resetEnabled: status === appStatus.PAUSED && remaining !== total,
         };
     };
 
@@ -148,7 +155,7 @@ class App extends React.Component {
                         />
                         <Numberpad
                             onClick={this.addDigit}
-                            hidden={this.state.status !== 'stopped'}
+                            hidden={this.state.status !== appStatus.STOPPED}
                         />
                         <div>{this.state.status}</div>
                     </div>
@@ -157,7 +164,7 @@ class App extends React.Component {
                     url="sounds/foghorn.mp3"
                     autoLoad={true}
                     playStatus={
-                        this.state.status === 'alarming'
+                        this.state.status === appStatus.ALARMING
                             ? Sound.status.PLAYING
                             : Sound.status.STOPPED
                     }
