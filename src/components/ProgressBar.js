@@ -9,15 +9,14 @@ class ProgressBar extends React.Component {
     };
 
     render() {
-        const width = this.props.size;
-        const progressWidth = 100 * (this.props.progress / this.props.total) + "%";
+        const progressWidth = 100 * (this.props.progress / this.props.total) + '%';
 
-        return <div>
-            <div className="progress-background" style={{width}}>
-                <div className="progress" style={{width: progressWidth}}></div>
+        return (
+            <div className="progress-background" style={{ width: this.props.size }}>
+                <div className="progress" style={{ width: progressWidth }} />
             </div>
-        </div>
-   }
-};
+        );
+    }
+}
 
 export default ProgressBar;
