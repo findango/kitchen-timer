@@ -116,6 +116,7 @@ class App extends React.Component {
     clear = () => {
         this.setState({
             remaining: 0,
+            total: 0,
             status: appStatus.STOPPED,
             digits: '',
         });
@@ -135,7 +136,7 @@ class App extends React.Component {
     configureButtons = () => {
         const { status, total, remaining, digits } = this.state;
         return {
-            clearEnabled: status !== appStatus.RUNNING,
+            clearEnabled: status !== appStatus.RUNNING && (remaining !== 0 || digits.length),
             playEnabled:
                 status === appStatus.PAUSED ||
                 (status === appStatus.STOPPED && (remaining !== 0 || digits.length)),
