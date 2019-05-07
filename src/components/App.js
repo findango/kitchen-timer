@@ -2,6 +2,7 @@ import React from 'react';
 import Sound from 'react-sound';
 import 'milligram';
 
+import PageTitle from './PageTitle';
 import Display from './Display';
 import ProgressBar from './ProgressBar';
 import Controls from './Controls';
@@ -18,6 +19,14 @@ const appStatus = {
     ALARMING: 'alarming',
     STOPPED: 'stopped',
 };
+
+const Layout = props => (
+    <div className="App container">
+        <div className="row">
+            <div className="column column-60 column-offset-20">{props.children}</div>
+        </div>
+    </div>
+);
 
 class App extends React.Component {
     constructor() {
@@ -137,29 +146,21 @@ class App extends React.Component {
 
     render() {
         return (
-            <div className="App container">
-                <div className="row">
-                    <div className="column column-60 column-offset-20">
-                        <Display time={this.state.remaining} digits={this.state.digits} />
-                        <ProgressBar
-                            size="100%"
-                            total={this.state.total}
-                            progress={this.state.remaining}
-                        />
-                        <Controls
-                            buttonState={this.configureButtons()}
-                            onPlay={this.play}
-                            onPause={this.pause}
-                            onReset={this.reset}
-                            onClear={this.clear}
-                        />
-                        <Numberpad
-                            onClick={this.addDigit}
-                            hidden={this.state.status !== appStatus.STOPPED}
-                        />
-                        <div>{this.state.status}</div>
-                    </div>
-                </div>
+            <Layout>
+                <PageTitle time={this.state.remaining} />
+                <Display time={this.state.remaining} digits={this.state.digits} />
+                <ProgressBar size="100%" total={this.state.total} progress={this.state.remaining} />
+                <Controls
+                    buttonState={this.configureButtons()}
+                    onPlay={this.play}
+                    onPause={this.pause}
+                    onReset={this.reset}
+                    onClear={this.clear}
+                />
+                <Numberpad
+                    onClick={this.addDigit}
+                    hidden={this.state.status !== appStatus.STOPPED}
+                />
                 <Sound
                     url="sounds/foghorn.mp3"
                     autoLoad={true}
@@ -169,7 +170,7 @@ class App extends React.Component {
                             : Sound.status.STOPPED
                     }
                 />
-            </div>
+            </Layout>
         );
     }
 }
